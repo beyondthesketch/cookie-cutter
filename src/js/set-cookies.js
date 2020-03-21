@@ -10,8 +10,8 @@ export const setCookie = (name, value, exp, options) => {
     }
     else {
         const expiry = new Date();
-        const nm = encodeURIComponent(sanitiseString(name));
-        const val = encodeURIComponent(sanitiseString(value));
+        const nm = encodeURIComponent(name);
+        const val = encodeURIComponent(value);
 
         let new_cookie = nm + '=' + val;	// need to escape the cookie value
 
@@ -21,20 +21,19 @@ export const setCookie = (name, value, exp, options) => {
             console && console.log('setCookie: Preparing expiry date...');
 
             expiry.setDate(expiry.getDate() + exp);
-            expiry = expiry.toUTCString();
 
-            new_cookie += ';expires=' + expiry;
+            new_cookie += ';expires=' + expiry.toUTCString();
         }
 
-        // other options
         if (options && options.constructor === Object) {
             // use keys instead?
             for (const i in options) {
-                if (options.hasOwnProperty(i)) {
+                if (options.hasOwnProperty(i) && i !== 'secure') {
                     new_cookie += ';' + i + '=' + options[i];
                 }
             };
         }
+        (!options || (options && options.secure !== false)) && location.protocol === 'https' && (new_cookie += ';secure');
 
         document.cookie = new_cookie;
 
