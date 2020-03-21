@@ -9,9 +9,8 @@ export const deleteCookie = (name) => {
     }
     else {
         expire_now.setDate(expire_now.getDate() - 365);
-        expire_now = expire_now.toUTCString();
 
-        document.cookie = name + '=null;expires=' + expire_now;
+        document.cookie = name + '=null;expires=' + expire_now.toUTCString();
 
         console && console.log('deleteCookie: Cookie deletion in progress...');
 
