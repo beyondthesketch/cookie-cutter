@@ -10,8 +10,8 @@ export const purgeCookies = () => {
 
     for (let i = no_of_cookies; i--;) {
         if (!!all_cookies[i]) { // if true
-            const cookie_name = all_cookies[i].substring(0, all_cookies[i].indexOf('='));
-            deleteCookie(cookie_name);
+            const [key, val] = all_cookies[i];
+            deleteCookie(key);
 
             no_deleted += 1;
         }
