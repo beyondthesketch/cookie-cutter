@@ -33,13 +33,21 @@ export const setCookie = (name, value, exp, options) => {
                 }
             };
         }
-        (!options || (options && options.secure !== false)) && location.protocol === 'https' && (new_cookie += ';secure');
+        if (!options || options && options.secure !== false) {
+            location.protocol === 'https:' && (new_cookie += ';secure')
+        }
+        // (!options || (options && options.secure !== false)) && location.protocol === 'https:' && (new_cookie += ';secure');
 
         document.cookie = new_cookie;
 
         // confirm cookie exists
-        if (!checkCookieExists(name)) {
-            console && console.error('setCookie: ERROR! Cookie was not set or could not be set correctly...');
+        if (!options || options && options.path && (options.path === location.pathname) || options && options.domain && (options.domain === location.hostname)) {
+            if (!checkCookieExists(name)) {
+                console && console.error('setCookie: ERROR! Cookie was not set or could not be set correctly...');
+            }
+        }
+        else {
+            console && console.log('setCookie: Cookie was set on a different domain or path; could not confirm it was set');
         }
     }
     console && console.log('setCookie: DONE!');

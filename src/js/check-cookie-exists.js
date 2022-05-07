@@ -7,9 +7,19 @@ export const checkCookieExists = (name, return_val) => {
 
     console && console.log('checkCookieExists: Running...');
 
+    let cookieVal;
+
     for (let i = get_cookies.length; i--;) {
-        if (!!get_cookies[i]) { // if true
-            if (get_cookies[i].substring(0, get_cookies[i].indexOf('=')) === name) {
+        if (!!get_cookies[i]) {
+            const [key, val] = get_cookies[i];
+
+            if (!name.includes('*') && key === name) {
+                cookieVal = val;
+                cookie_found = true;
+                break;
+            }
+            else if (name.includes('*') && key.startsWith(name)) {
+                cookieVal = val;
                 cookie_found = true;
                 break;
             }
@@ -31,6 +41,6 @@ export const checkCookieExists = (name, return_val) => {
     else if (cookie_found && (return_val === true)) {
         console && console.log('checkCookieExists: Cookie found. Returning the value...DONE!');
 
-        return get_cookies[i].slice((get_cookies[i].indexOf('=')) + 1);
+        return cookieVal;
     }
 };

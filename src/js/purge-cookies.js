@@ -1,7 +1,7 @@
 import { retrieveCookies } from './retrieve-cookies.js';
 import { deleteCookie } from './delete-cookie.js';
 
-export const purgeCookies = () => {
+export const purgeCookies = (path) => {
     const all_cookies = retrieveCookies();
     const no_of_cookies = all_cookies.length;
     let no_deleted = 0;
@@ -11,7 +11,7 @@ export const purgeCookies = () => {
     for (let i = no_of_cookies; i--;) {
         if (!!all_cookies[i]) { // if true
             const [key, val] = all_cookies[i];
-            deleteCookie(key);
+            deleteCookie(key, (path && (typeof path === 'string') && (path !== '/')) ? { path } : undefined);
 
             no_deleted += 1;
         }

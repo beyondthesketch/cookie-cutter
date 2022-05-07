@@ -6,8 +6,9 @@ export const retrieveCookies = () => {
 
     for (let i = raw_cookies.length; i--;) {
         if (!!raw_cookies[i]) { // if true
-            const tmp = raw_cookies[i].replace(/\s/g, '');	// remove spaces from the cookie
-            retrieved_cookies.push(decodeURIComponent(tmp));
+            // const tmp = raw_cookies[i].replace(/\s/g, '');	// remove spaces from the cookie - is this needed?
+            const tmpCookie = raw_cookies[i].trim().split('=');
+            retrieved_cookies.push([tmpCookie[0], decodeURIComponent(tmpCookie[1])]);
         }
     }
 
