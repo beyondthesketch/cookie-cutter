@@ -4,7 +4,7 @@ import { setCookie } from './set-cookies.js';
 import { purgeCookies } from './purge-cookies.js';
 import { checkCookieExists } from './check-cookie-exists.js';
 
-const cookieName = 'btsCookies';
+const cookieName = 'btsCookieBanner';
 
 export const showBanner = (
     settings = {}
@@ -15,6 +15,7 @@ export const showBanner = (
         text = 'This site uses cookies and similar technologies to help make it work better. By continuing, you agree to our cookie policy',
         confirmText = 'Accept all',
         declineText = 'Reject all',
+        saveButtonText = 'Save settings',
         title = 'Use of cookies',
         manageFeature,
         manageText = 'Manage cookies',
@@ -75,6 +76,7 @@ export const showBanner = (
 
     // TODO: These are categories of cookies which should include the cookies to set - not individual cookies
     if (manageFeature && optionalCookies && Array.isArray(optionalCookies) && optionalCookies.length) {
+        const inputRefs = [];
         optionalCookies.forEach(
             (cookie) => {
                 const {
@@ -100,9 +102,32 @@ export const showBanner = (
                 catCheckbox.setAttribute('data-id', title);
                 wrapper.appendChild(catCheckbox);
 
+                // ref the input
+                inputRefs.push(catCheckbox);
+
                 manageDetails.appendChild(wrapper);
             }
-        )
+        );
+
+        const saveButton = document.createElement('button');
+        saveButton.className = 'bts-cookie-banner__button m--save-settings-button';
+        saveButton.textContent = saveButtonText;
+
+        saveButton.addEventListener(
+            'click',
+            () => {
+                const payload = inputRefs.map((element) => [element.dataset.id, element.checked]);
+                console.log(payload);
+                const saveCookiesEvent = new CustomEvent('savecookies', {
+                    detail: {
+                        config: payload,
+                    }
+                });
+                document.dispatchEvent(saveCookiesEvent);
+            }
+        );
+
+        manageDetails.appendChild(saveButton);
     }
 
     const buttonWrapper = document.createElement('div');
@@ -120,6 +145,8 @@ export const showBanner = (
                 JSON.stringify({c:1, d: Date.now()}),
                 365
             );
+            const acceptAllEvent = new CustomEvent('acceptcookies');
+            document.dispatchEvent(acceptAllEvent);
             document.body.removeChild(document.getElementById('bts-cookie-banner'));
         }
     );
@@ -137,6 +164,8 @@ export const showBanner = (
                 '0',
                 365
             );
+            const declineAllEvent = new CustomEvent('declinecookies');
+            document.dispatchEvent(declineAllEvent);
             document.body.removeChild(document.getElementById('bts-cookie-banner'));
         }
     );
