@@ -116,14 +116,27 @@ export const showBanner = (
         saveButton.addEventListener(
             'click',
             () => {
-                const payload = inputRefs.map((element) => [element.dataset.id, element.checked]);
-                console.log(payload);
+                let cookiesOn = false;
+                const payload = inputRefs.map((element) => {
+                    if (cookiesOn === false && element.checked) {
+                        cookiesOn = true;
+                    }
+                    return [element.dataset.id, element.checked];
+                });
+
+                setCookie(
+                    cookieName,
+                    cookiesOn ? JSON.stringify({c:1, d: Date.now()}) : '0',
+                    90
+                );
+
                 const saveCookiesEvent = new CustomEvent('savecookies', {
                     detail: {
                         config: payload,
                     }
                 });
                 document.dispatchEvent(saveCookiesEvent);
+                document.body.removeChild(document.getElementById('bts-cookie-banner'));
             }
         );
 
