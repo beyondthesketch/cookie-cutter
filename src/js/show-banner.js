@@ -82,6 +82,7 @@ export const showBanner = (
                 const {
                     title,
                     description,
+                    on,
                     cookieList
                 } = cookie;
 
@@ -96,14 +97,28 @@ export const showBanner = (
                 catDesc.textContent = description;
                 wrapper.appendChild(catDesc);
 
+                const catCheckboxWrapper = document.createElement('div');
+                catCheckboxWrapper.className = 'bts-cookie-banner__opt-check';
+
                 const catCheckbox = document.createElement('input');
-                catCheckbox.className = 'bts-cookie-banner__opt-check';
+                catCheckbox.className = 'bts-cookie-banner__opt-check-input';
                 catCheckbox.setAttribute('type', 'checkbox');
                 catCheckbox.setAttribute('data-id', title);
-                wrapper.appendChild(catCheckbox);
+                catCheckbox.setAttribute('id', encodeURIComponent(title));
+                on && catCheckbox.setAttribute('checked', 'true');
+                on && (catCheckbox.checked = true);
+
+                catCheckboxWrapper.appendChild(catCheckbox);
 
                 // ref the input
                 inputRefs.push(catCheckbox);
+
+                const catCheckboxLabel = document.createElement('label');
+                catCheckboxLabel.className = 'bts-cookie-banner__opt-check-label';
+                catCheckboxLabel.setAttribute('for', encodeURIComponent(title))
+                catCheckboxWrapper.appendChild(catCheckboxLabel);
+
+                wrapper.appendChild(catCheckboxWrapper);
 
                 manageDetails.appendChild(wrapper);
             }
