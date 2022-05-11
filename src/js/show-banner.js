@@ -143,7 +143,7 @@ export const showBanner = (
             setCookie(
                 cookieName,
                 JSON.stringify({c:1, d: Date.now()}),
-                365
+                90
             );
             const acceptAllEvent = new CustomEvent('acceptcookies');
             document.dispatchEvent(acceptAllEvent);
@@ -162,7 +162,7 @@ export const showBanner = (
             setCookie(
                 cookieName,
                 '0',
-                365
+                90
             );
             const declineAllEvent = new CustomEvent('declinecookies');
             document.dispatchEvent(declineAllEvent);
