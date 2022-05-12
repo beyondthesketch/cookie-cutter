@@ -7,7 +7,8 @@ import { checkCookieExists } from './check-cookie-exists.js';
 const cookieName = 'btsCookieBanner';
 
 export const showBanner = (
-    settings = {}
+    settings = {},
+    open = false,
 ) => {
     const {
         link,
@@ -24,9 +25,6 @@ export const showBanner = (
         optionalCookies
     } = settings;
 
-    if (checkCookieExists(cookieName) || !link) {
-        return false;
-    }
     const bannerBody = document.createElement('aside');
     bannerBody.className = 'bts-cookie-banner';
     bannerBody.setAttribute('id', 'bts-cookie-banner');
@@ -202,7 +200,9 @@ export const showBanner = (
 
     bannerBody.appendChild(buttonWrapper);
 
-    document.body.appendChild(bannerBody);
+    if (open || !checkCookieExists(cookieName)) {
+        document.body.appendChild(bannerBody);
+    }
 
     return bannerBody;
 };
