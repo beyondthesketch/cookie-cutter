@@ -140,7 +140,10 @@ export const showBanner = (
                 setCookie(
                     cookieName,
                     cookiesOn ? JSON.stringify({c:1, d: Date.now()}) : '0',
-                    90
+                    90,
+                    {
+                        path: '/'
+                    }
                 );
 
                 const saveCookiesEvent = new CustomEvent('savecookies', {
@@ -169,7 +172,10 @@ export const showBanner = (
             setCookie(
                 cookieName,
                 JSON.stringify({c:1, d: Date.now()}),
-                90
+                90,
+                {
+                    path: '/'
+                }
             );
             const acceptAllEvent = new CustomEvent('acceptcookies');
             document.dispatchEvent(acceptAllEvent);
@@ -188,7 +194,10 @@ export const showBanner = (
             setCookie(
                 cookieName,
                 '0',
-                90
+                90,
+                {
+                    path: '/'
+                }
             );
             const declineAllEvent = new CustomEvent('declinecookies');
             document.dispatchEvent(declineAllEvent);
